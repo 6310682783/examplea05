@@ -35,29 +35,14 @@ fun Note(
         backgroundColor = background
     ) {
         ListItem(
-            text = { Text(text = note.title, maxLines = 1) },
+            text = { Text(text = note.firstname + " "+ note.lastname, maxLines = 1)
+
+
+                   },
             secondaryText = {
-                Text(text = note.content, maxLines = 1)
+                Text(text = note.phone, maxLines = 1)
             },
-            icon = {
-                NoteColor(
-                    color = Color.fromHex(note.color.hex),
-                    size = 40.dp,
-                    border = 1.dp
-                )
-            },
-            trailing = {
-                if (note.isCheckedOff != null) {
-                    Checkbox(
-                        checked = note.isCheckedOff,
-                        onCheckedChange = { isChecked ->
-                            val newNote = note.copy(isCheckedOff = isChecked)
-                            onNoteCheckedChange.invoke(newNote)
-                        },
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
-                }
-            },
+
             modifier = Modifier.clickable {
                 onNoteClick.invoke(note)
             }

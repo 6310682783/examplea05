@@ -31,7 +31,7 @@ fun NotesScreen(viewModel: MainViewModel) {
             TopAppBar(
                 title = {
                     Text(
-                        text = "My Notes",
+                        text = "My Phone Book",
                         color = MaterialTheme.colors.onPrimary
                     )
                 },
@@ -113,8 +113,7 @@ private fun NotesListPreview() {
 
             NoteModel(2, "0123456789","fname","lname", "Note 2", "Content 2", null),
             NoteModel(3, "0123456789","fname","lname", "Note 3", "Content 3", null),
-            //NoteModel(2, "Note 2", "Content 2", false),
-            //NoteModel(3, "Note 3", "Content 3", true)
+
         ),
         onNoteCheckedChange = {},
         onNoteClick = {}

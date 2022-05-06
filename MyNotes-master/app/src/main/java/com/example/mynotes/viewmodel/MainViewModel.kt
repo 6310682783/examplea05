@@ -10,6 +10,7 @@ import com.example.mynotes.database.DbMapper
 import com.example.mynotes.database.Repository
 import com.example.mynotes.domain.model.ColorModel
 import com.example.mynotes.domain.model.NoteModel
+import com.example.mynotes.domain.model.TagModel
 import com.example.mynotes.routing.MyNotesRouter
 import com.example.mynotes.routing.Screen
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,9 @@ class MainViewModel(application: Application) : ViewModel() {
 
     val colors: LiveData<List<ColorModel>> by lazy {
         repository.getAllColors()
+    }
+    val tags: LiveData<List<TagModel>> by lazy {
+        repository.getAllTags()
     }
 
     val notesInTrash by lazy { repository.getAllNotesInTrash() }

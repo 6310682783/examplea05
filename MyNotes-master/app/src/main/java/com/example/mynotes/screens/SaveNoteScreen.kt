@@ -27,6 +27,7 @@ import com.example.mynotes.R
 import com.example.mynotes.domain.model.ColorModel
 import com.example.mynotes.domain.model.NEW_NOTE_ID
 import com.example.mynotes.domain.model.NoteModel
+import com.example.mynotes.domain.model.TagModel
 import com.example.mynotes.ui.components.NoteColor
 import com.example.mynotes.util.fromHex
 import kotlinx.coroutines.launch
@@ -37,6 +38,8 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
     val noteEntry by viewModel.noteEntry.observeAsState(NoteModel())
 
     val colors: List<ColorModel> by viewModel.colors.observeAsState(listOf())
+
+    val tags: List<TagModel> by viewModel.tags.observeAsState(listOf())
 
     val bottomDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
 
@@ -71,12 +74,12 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
         BottomDrawer(
             drawerState = bottomDrawerState,
             drawerContent = {
-                ColorPicker(
-                    colors = colors,
-                    onColorSelect = { color ->
-                        viewModel.onNoteEntryChange(noteEntry.copy(color = color))
-                    }
-                )
+
+                TagPicker(
+                    tags = tags, onTagSelect = { tag ->
+                    viewModel.onNoteEntryChange(noteEntry.copy(tag = tag))
+                })
+
             }
         ) {
             SaveNoteContent(
@@ -98,7 +101,7 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
                 text = {
                     Text(
                         "Are you sure you want to " +
-                                "move this note to the trash?"
+                                "move this phone book to the trash?"
                     )
                 },
                 confirmButton = {
@@ -131,7 +134,7 @@ fun SaveNoteTopAppBar(
     TopAppBar(
         title = {
             Text(
-                text = "Save Note",
+                text = "Save Phone number",
                 color = MaterialTheme.colors.onPrimary
             )
         },
@@ -181,10 +184,18 @@ private fun SaveNoteContent(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         ContentTextField(
-            label = "Title",
-            text = note.title,
-            onTextChange = { newTitle ->
-                onNoteChange.invoke(note.copy(title = newTitle))
+            label = "firstname",
+            text = note.firstname,
+            onTextChange = { newFirstname ->
+                onNoteChange.invoke(note.copy(firstname = newFirstname))
+            }
+        )
+        ContentTextField(
+
+            label = "lastname",
+            text = note.lastname,
+            onTextChange = { newLastname ->
+                onNoteChange.invoke(note.copy(lastname = newLastname))
             }
         )
 
@@ -192,25 +203,17 @@ private fun SaveNoteContent(
             modifier = Modifier
                 .heightIn(max = 240.dp)
                 .padding(top = 16.dp),
-            label = "Body",
-            text = note.content,
-            onTextChange = { newContent ->
-                onNoteChange.invoke(note.copy(content = newContent))
+            label = "Phone Number",
+            text = note.phone,
+            onTextChange = { newPhone ->
+                onNoteChange.invoke(note.copy(phone = newPhone))
             }
         )
 
         val canBeCheckedOff: Boolean = note.isCheckedOff != null
 
-        NoteCheckOption(
-            isChecked = canBeCheckedOff,
-            onCheckedChange = { canBeCheckedOffNewValue ->
-                val isCheckedOff: Boolean? = if (canBeCheckedOffNewValue) false else null
 
-                onNoteChange.invoke(note.copy(isCheckedOff = isCheckedOff))
-            }
-        )
-
-        PickedColor(color = note.color)
+        PickedTag(tag = note.tag)
     }
 }
 
@@ -269,11 +272,33 @@ private fun PickedColor(color: ColorModel) {
                 .weight(1f)
                 .align(Alignment.CenterVertically)
         )
-        NoteColor(
-            color = Color.fromHex(color.hex),
-            size = 40.dp,
-            border = 1.dp,
-            modifier = Modifier.padding(4.dp)
+        Text(
+            text = color.name,
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
+        )
+    }
+}
+
+@Composable
+private fun PickedTag(tag: TagModel) {
+    Row(
+        Modifier
+            .padding(8.dp)
+            .padding(top = 16.dp)
+    ) {
+        Text(
+            text = "Picked Tag",
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
+        )
+        Text(
+            text = tag.name,
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
         )
     }
 }
@@ -285,7 +310,7 @@ private fun ColorPicker(
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "Color picker",
+            text = "C picker",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(8.dp)
@@ -299,6 +324,60 @@ private fun ColorPicker(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun TagPicker(
+    tags: List<TagModel>,
+    onTagSelect: (TagModel) -> Unit
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = "Tag picker",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(8.dp)
+        )
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            items(tags.size) { itemIndex ->
+                val tag = tags[itemIndex]
+                TagItem(
+                    tag = tag,
+                    onTagSelect = onTagSelect,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun TagItem(
+    tag: TagModel,
+    onTagSelect: (TagModel) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(
+                onClick = {
+                    onTagSelect(tag)
+                }
+            )
+    ) {
+        //NoteColor(
+        //    modifier = Modifier.padding(10.dp),
+        //    color = Color.fromHex(color.hex),
+        //    size = 80.dp,
+        //    border = 2.dp
+        //)
+        Text(
+            text = tag.name,
+            fontSize = 22.sp,
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .align(Alignment.CenterVertically)
+        )
     }
 }
 
