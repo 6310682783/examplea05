@@ -96,12 +96,12 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
                     moveNoteToTrashDialogShownState.value = false
                 },
                 title = {
-                    Text("Move note to the trash?")
+                    Text("Remove this Contact?")
                 },
                 text = {
                     Text(
-                        "Are you sure you want to " +
-                                "move this phone book to the trash?"
+                        "Do you want to remove this contact? "
+
                     )
                 },
                 confirmButton = {
@@ -115,7 +115,7 @@ fun SaveNoteScreen(viewModel: MainViewModel) {
                     TextButton(onClick = {
                         moveNoteToTrashDialogShownState.value = false
                     }) {
-                        Text("Dismiss")
+                        Text("Cancle")
                     }
                 }
             )
@@ -134,7 +134,7 @@ fun SaveNoteTopAppBar(
     TopAppBar(
         title = {
             Text(
-                text = "Save Phone number",
+                text = "Contact Info",
                 color = MaterialTheme.colors.onPrimary
             )
         },
@@ -151,15 +151,15 @@ fun SaveNoteTopAppBar(
             IconButton(onClick = onSaveNoteClick) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Save Note Button",
+                    contentDescription = "True Button",
                     tint = MaterialTheme.colors.onPrimary
                 )
             }
             
             IconButton(onClick = onOpenColorPickerClick) {
                 Icon(
-                    painter = painterResource(id = R.drawable.baseline_color_lens_24),
-                    contentDescription = "Open Color Picker Button",
+                    painter = painterResource(id = R.drawable.baseline_flag_24),
+                    contentDescription = "Open Tag Picker Button",
                     tint = MaterialTheme.colors.onPrimary
                 )
             }
@@ -184,7 +184,7 @@ private fun SaveNoteContent(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         ContentTextField(
-            label = "firstname",
+            label = "Firstname",
             text = note.firstname,
             onTextChange = { newFirstname ->
                 onNoteChange.invoke(note.copy(firstname = newFirstname))
@@ -192,7 +192,7 @@ private fun SaveNoteContent(
         )
         ContentTextField(
 
-            label = "lastname",
+            label = "Lastname",
             text = note.lastname,
             onTextChange = { newLastname ->
                 onNoteChange.invoke(note.copy(lastname = newLastname))
@@ -201,12 +201,13 @@ private fun SaveNoteContent(
 
         ContentTextField(
             modifier = Modifier
-                .heightIn(max = 240.dp)
-                .padding(top = 16.dp),
+                .heightIn(max = 120.dp)
+                .padding(top = 4.dp),
             label = "Phone Number",
             text = note.phone,
             onTextChange = { newPhone ->
                 onNoteChange.invoke(note.copy(phone = newPhone))
+
             }
         )
 
@@ -260,70 +261,22 @@ private fun NoteCheckOption(
 }
 
 @Composable
-private fun PickedColor(color: ColorModel) {
-    Row(
-        Modifier
-            .padding(8.dp)
-            .padding(top = 16.dp)
-    ) {
-        Text(
-            text = "Picked color",
-            modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically)
-        )
-        Text(
-            text = color.name,
-            modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically)
-        )
-    }
-}
-
-@Composable
 private fun PickedTag(tag: TagModel) {
     Row(
         Modifier
-            .padding(8.dp)
             .padding(top = 16.dp)
     ) {
         Text(
-            text = "Picked Tag",
+            text = "Tag :",
             modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically)
+                .padding(5.dp)
         )
         Text(
             text = tag.name,
             modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically)
-        )
-    }
-}
+                .padding(5.dp)
 
-@Composable
-private fun ColorPicker(
-    colors: List<ColorModel>,
-    onColorSelect: (ColorModel) -> Unit
-) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = "C picker",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(8.dp)
         )
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(colors.size) { itemIndex ->
-                val color = colors[itemIndex]
-                ColorItem(
-                    color = color,
-                    onColorSelect = onColorSelect
-                )
-            }
-        }
     }
 }
 
@@ -334,7 +287,7 @@ private fun TagPicker(
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = "Tag picker",
+            text = "Select Tag",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(8.dp)
@@ -365,72 +318,12 @@ fun TagItem(
                 }
             )
     ) {
-        //NoteColor(
-        //    modifier = Modifier.padding(10.dp),
-        //    color = Color.fromHex(color.hex),
-        //    size = 80.dp,
-        //    border = 2.dp
-        //)
         Text(
             text = tag.name,
-            fontSize = 22.sp,
+            fontSize = 20.sp,
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 24.dp)
                 .align(Alignment.CenterVertically)
         )
     }
-}
-
-@Composable
-fun ColorItem(
-    color: ColorModel,
-    onColorSelect: (ColorModel) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(
-                onClick = {
-                    onColorSelect(color)
-                }
-            )
-    ) {
-        NoteColor(
-            modifier = Modifier.padding(10.dp),
-            color = Color.fromHex(color.hex),
-            size = 80.dp,
-            border = 2.dp
-        )
-        Text(
-            text = color.name,
-            fontSize = 22.sp,
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .align(Alignment.CenterVertically)
-        )
-    }
-}
-
-@Preview
-@Composable
-fun ColorItemPreview() {
-    ColorItem(ColorModel.DEFAULT) {}
-}
-
-@Preview
-@Composable
-fun ColorPickerPreview() {
-    ColorPicker(
-        colors = listOf(
-            ColorModel.DEFAULT,
-            ColorModel.DEFAULT,
-            ColorModel.DEFAULT
-        )
-    ) { }
-}
-
-@Preview
-@Composable
-fun PickedColorPreview() {
-    PickedColor(ColorModel.DEFAULT)
 }

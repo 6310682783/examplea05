@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.example.mynotes.routing.MyNotesRouter
 import com.example.mynotes.routing.Screen
 import com.example.mynotes.ui.theme.MyNotesTheme
-import com.example.mynotes.ui.theme.MyNotesThemeSettings
 
 @Composable
 private fun AppDrawerHeader() {
@@ -125,39 +124,6 @@ fun ScreenNavigationButtonPreview() {
 }
 
 @Composable
-private fun LightDarkThemeItem() {
-    Row(
-        Modifier
-            .padding(8.dp)
-    ) {
-        Text(
-            text = "Turn on dark theme",
-            style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp)
-                .align(alignment = Alignment.CenterVertically)
-        )
-        Switch(
-            checked = MyNotesThemeSettings.isDarkThemeEnabled,
-            onCheckedChange = { MyNotesThemeSettings.isDarkThemeEnabled = it },
-            modifier = Modifier
-                .padding(start = 8.dp, end = 8.dp)
-                .align(alignment = Alignment.CenterVertically)
-        )
-    }
-}
-
-@Preview
-@Composable
-fun LightDarkThemeItemPreview() {
-    MyNotesTheme {
-        LightDarkThemeItem()
-    }
-}
-
-@Composable
 fun AppDrawer(
     currentScreen: Screen,
     closeDrawerAction: () -> Unit
@@ -185,7 +151,6 @@ fun AppDrawer(
                 closeDrawerAction()
             }
         )
-        LightDarkThemeItem()
     }
 }
 

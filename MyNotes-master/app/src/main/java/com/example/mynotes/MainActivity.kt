@@ -20,7 +20,6 @@ import com.example.mynotes.screens.NotesScreen
 import com.example.mynotes.screens.SaveNoteScreen
 import com.example.mynotes.screens.TrashScreen
 import com.example.mynotes.ui.theme.MyNotesTheme
-import com.example.mynotes.ui.theme.MyNotesThemeSettings
 import com.example.mynotes.viewmodel.MainViewModel
 import com.example.mynotes.viewmodel.MainViewModelFactory
 
@@ -29,7 +28,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyNotesTheme(darkTheme = MyNotesThemeSettings.isDarkThemeEnabled) {
+            MyNotesTheme() {
                 val viewModel: MainViewModel = viewModel(
                     factory = MainViewModelFactory(LocalContext.current.applicationContext as Application)
                 )

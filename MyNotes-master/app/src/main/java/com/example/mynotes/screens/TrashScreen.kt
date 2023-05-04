@@ -152,7 +152,7 @@ private fun Content(
     onNoteClick: (NoteModel) -> Unit,
     selectedNotes: List<NoteModel>,
 ) {
-    val tabs = listOf("REGULAR", "CHECKABLE")
+    val tabs = listOf("Removed item")
 
     // Init state for selected tab
     var selectedTab by remember { mutableStateOf(0) }
